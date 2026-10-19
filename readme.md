@@ -1,37 +1,34 @@
-# Multi-Language Shopping Cart Note Plugin
+# Note in Basket for Shoptet
 
-## Overview
+A client-side plugin for [Shoptet](https://www.shoptet.cz/) e-shops that lets customers add a **note to each product in the shopping cart** (e.g. engraving text, size details, a gift message). At checkout, all product notes are merged into the order's note field, so the shop receives them with the order.
 
-This JavaScript plugin enhances e-commerce shopping carts by enabling customers to add personalized notes to each product. These notes are then consolidated into one comprehensive note in the final order. Tailored for global e-commerce platforms, the plugin supports multiple languages and offers easy integration.
+![Shopping cart with a note field under each product](https://github.com/martenech/NoteInBasketShoptet/assets/27582579/8c94fdf0-25ba-4ecb-9b89-86a81e6d7279)
 
-## Key Features
+## Features
 
-- **Individual Product Notes**: Adds a text area to each product in the shopping cart for custom notes.
-- **Order Note Consolidation**: Compiles all product-specific notes into a single, comprehensive order note.
-- **Multilingual Support**: Dynamically sets the language based on the domain, supporting Slovak (`.sk`), Czech (`.cz`), Hungarian (`.hu`), and English (default).
-- **Seamless Integration**: Designed for easy addition to existing e-commerce platforms, with minimal setup required.
-
-## Technical Details
-
-- Language determination is based on the domain name.
-- Text areas are dynamically added to each product in the cart.
-- Local storage is used to persist notes even when navigating away from the page.
-- Integration with the `ShoptetDOMCartContentLoaded` event ensures compatibility with dynamic cart content.
+- **Note per product** – a textarea under every product in the cart.
+- **Merged order note** – on the checkout page, the notes are written into the order remark, together with a warning not to delete them.
+- **Persistent** – notes are kept in `localStorage`, so they survive page reloads and navigation.
+- **Multilingual** – the language is chosen by domain: Slovak (`.sk`), Czech (`.cz`), Hungarian (`.hu`), English (default).
+- **Works with dynamic cart updates** – listens to Shoptet's `ShoptetDOMCartContentLoaded` event.
 
 ## Installation
 
-1. **Download the Plugin**: Clone this repository or download the plugin files directly.
-2. **Include JavaScript File**: Add the plugin’s JavaScript file to your e-commerce platform.
-3. **Initialization**: The plugin initializes automatically on document load and cart content load.
-4. **Configure Languages (Optional)**: By default, language is determined by the domain. Customize language settings in the `translations` object if needed.
+1. In the Shoptet admin, open the template editor and its **HTML code** section.
+2. Paste the content of [`cart-minify.js`](cart-minify.js) (or the readable [`cart-update.js`](cart-update.js)) inside a `<script>` tag into the footer.
 
-## Usage
+The plugin initialises itself on `DOMContentLoaded` and on every cart refresh. Texts can be changed in the `translations` object.
 
-Once installed, the plugin adds a textarea for notes under each product in the shopping cart. These notes are saved in local storage and automatically compiled into the order note.
+## How it works
 
-## Support
+- Products are read from Shoptet's `dataLayer[0].shoptet.cart`; a textarea is inserted into each cart row (`tr[data-micro-sku]`).
+- Each note is saved under the key `product-note-<product code>`.
+- When the checkout remark field (`textarea[data-testid="remark"]`) is present, the plugin enables the note section and fills it with `Product <name>. Note: <text>` for each product.
 
-For support, feature requests, or bug reporting, please open an issue in this repository.
+## Author
 
-## Screenshot
-![image](https://github.com/archthinos/NoteInBasketShoptet/assets/27582579/8c94fdf0-25ba-4ecb-9b89-86a81e6d7279)
+Developed by **Martin Pohorelský** ([martenech](https://github.com/martenech)).
+
+## License
+
+MIT, see [`LICENSE`](LICENSE).
