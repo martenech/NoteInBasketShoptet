@@ -52,14 +52,14 @@ function addTextareaToProducts(products) {
 }
 
 function removeProductFromSession(products){
+    const prefix = 'product-note-';
     let productIds = products.map(product => product.code.toString());
 
-    for (let i = 0; i < localStorage.length; i++) {
+    // Only remove our own notes for products no longer in the cart; leave other localStorage keys alone
+    for (let i = localStorage.length - 1; i >= 0; i--) {
         let key = localStorage.key(i);
-        console.log(key);
-        if (!productIds.includes(key)) {
+        if (key.startsWith(prefix) && !productIds.includes(key.slice(prefix.length))) {
             localStorage.removeItem(key);
-            i--;
         }
     }
 }
